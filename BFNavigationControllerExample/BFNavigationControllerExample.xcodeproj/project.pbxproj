@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 55;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -174,10 +174,11 @@
 				ORGANIZATIONNAME = boxedfolder.com;
 			};
 			buildConfigurationList = 60CFF3661549E4F60059C143 /* Build configuration list for PBXProject "BFNavigationControllerExample" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 60CFF3611549E4F60059C143;
