@@ -167,8 +167,8 @@ static const CGFloat kPushPopAnimationDuration = 0.2;
     // Completion inline Block
     void(^navigationCompleted)(BOOL) = ^(BOOL animated) {
         // Call delegate
-        if (_delegate && [_delegate respondsToSelector:@selector(navigationController:didShowViewController:animated:)]) {
-            [_delegate navigationController:self didShowViewController:newController animated:animated];
+        if (self.delegate && [self.delegate respondsToSelector:@selector(navigationController:didShowViewController:animated:)]) {
+            [self.delegate navigationController:self didShowViewController:newController animated:animated];
         }
         
         // New controller did appear
