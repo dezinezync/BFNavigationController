@@ -171,6 +171,10 @@ static const CGFloat kPushPopAnimationDuration = 0.2;
             [self.delegate navigationController:self didShowViewController:newController animated:animated];
         }
         
+        if (push == NO && self.delegate && [self.delegate respondsToSelector:@selector(navigationController:willDismissViewController:animated:)]) {
+            [self.delegate navigationController:self willDismissViewController:lastController animated:animated];
+        }
+        
         // New controller did appear
         if ([newController respondsToSelector: @selector(viewDidAppear:)]) {
             [(id<BFViewController>)newController viewDidAppear:animated];

@@ -31,6 +31,13 @@
       willShowViewController:(NSViewController *)viewController
                     animated:(BOOL)animated;
 
+/**
+ * Sent to the receiver just before the navigation controller will dismiss a view controller's view and navigation item properties.
+ */
+- (void)navigationController:(BFNavigationController *)navigationController
+   willDismissViewController:(NSViewController *)viewController
+                    animated:(BOOL)animated;
+
 @end
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
