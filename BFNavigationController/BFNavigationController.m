@@ -24,22 +24,16 @@ static const CGFloat kPushPopAnimationDuration = 0.2;
 
 @end
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
 @implementation BFNavigationController {
-    NSMutableArray *_viewControllers;
+  NSMutableArray *_viewControllers;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
+#pragma mark -
 #pragma mark - Init Methods
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     return [self initWithFrame:NSZeroRect rootViewController:nil];
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 
 - (id)initWithFrame:(NSRect)aFrame rootViewController:(NSViewController *)viewController {
     if (self = [super initWithNibName: nil bundle: nil]) {
@@ -79,41 +73,27 @@ static const CGFloat kPushPopAnimationDuration = 0.2;
     return self;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
 #pragma mark - Accessors
 
 - (NSViewController *)topViewController {
     return [_viewControllers lastObject];
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
 - (NSViewController *)visibleViewController {
     return [_viewControllers lastObject];
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 
 - (NSArray *)viewControllers {
     return [NSArray arrayWithArray: _viewControllers];
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
 - (void)setViewControllers:(NSArray *)viewControllers {
     [self _setViewControllers:viewControllers animated:NO];
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
 - (void)setViewControllers:(NSArray *)viewControllers animated:(BOOL)animated {
     [self _setViewControllers:viewControllers animated:animated];
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
 
 #pragma mark - Helpers & Navigation
 
@@ -136,8 +116,6 @@ static const CGFloat kPushPopAnimationDuration = 0.2;
     // Navigate
     [self _navigateFromViewController:visibleController toViewController:newTopmostController animated:animated push:push];
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 
 - (void)_navigateFromViewController:(NSViewController *)lastController
                    toViewController:(NSViewController *)newController
@@ -229,9 +207,6 @@ static const CGFloat kPushPopAnimationDuration = 0.2;
     }
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
 #pragma mark - Push / Pop Controllers
 
 - (void)pushViewController:(NSViewController *)viewController animated:(BOOL)animated {
@@ -245,8 +220,6 @@ static const CGFloat kPushPopAnimationDuration = 0.2;
     // Navigate
     [self _navigateFromViewController:visibleController toViewController:[_viewControllers lastObject] animated:animated push:YES];
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 
 - (NSViewController *)popViewControllerAnimated:(BOOL)animated {
     // Don't pop last controller
@@ -268,7 +241,7 @@ static const CGFloat kPushPopAnimationDuration = 0.2;
     return viewController;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
 
 - (NSArray *)popToRootViewControllerAnimated:(BOOL)animated {
     // Don't pop last controller
@@ -295,7 +268,7 @@ static const CGFloat kPushPopAnimationDuration = 0.2;
     return [[dispControllers reverseObjectEnumerator] allObjects];
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
 
 - (NSArray *)popToViewController:(NSViewController *)viewController animated:(BOOL)animated {
     NSViewController *visibleController = self.visibleViewController;
@@ -322,6 +295,28 @@ static const CGFloat kPushPopAnimationDuration = 0.2;
 
     // Return popping controller stack
     return [[dispControllers reverseObjectEnumerator] allObjects];
+}
+
+#pragma mark - Forwarding
+
+- (id)forwardingTargetForSelector:(SEL)aSelector {
+  for (NSViewController *vc in [[_viewControllers reverseObjectEnumerator] allObjects]) {
+    if ([vc respondsToSelector:aSelector]) {
+      return vc;
+    }
+  }
+  
+  return [super forwardingTargetForSelector:aSelector];
+}
+
+- (id)supplementalTargetForAction:(SEL)action sender:(id)sender {
+  for (NSViewController *vc in [[_viewControllers reverseObjectEnumerator] allObjects]) {
+    if ([vc respondsToSelector:action]) {
+      return vc;
+    }
+  }
+  
+  return [super supplementalTargetForAction:action sender:sender];
 }
 
 @end
