@@ -300,20 +300,16 @@ static const CGFloat kPushPopAnimationDuration = 0.2;
 #pragma mark - Forwarding
 
 - (id)forwardingTargetForSelector:(SEL)aSelector {
-  for (NSViewController *vc in [[_viewControllers reverseObjectEnumerator] allObjects]) {
-    if ([vc respondsToSelector:aSelector]) {
-      return vc;
-    }
+  if ([[self topViewController] respondsToSelector:aSelector]) {
+    return [self topViewController];
   }
   
   return [super forwardingTargetForSelector:aSelector];
 }
 
 - (id)supplementalTargetForAction:(SEL)action sender:(id)sender {
-  for (NSViewController *vc in [[_viewControllers reverseObjectEnumerator] allObjects]) {
-    if ([vc respondsToSelector:action]) {
-      return vc;
-    }
+  if ([[self topViewController] respondsToSelector:action]) {
+    return [self topViewController];
   }
   
   return [super supplementalTargetForAction:action sender:sender];
